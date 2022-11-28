@@ -1,4 +1,5 @@
-DOCKER_COMPOSE_DIR=./.docker
+DOCKER_DIR=./.docker
+DOCKER_COMPOSE_DIR=$(DOCKER_DIR)/compose
 DOCKER_COMPOSE_FILE=$(DOCKER_COMPOSE_DIR)/docker-compose.yml
 DEFAULT_CONTAINER=workspace
 DOCKER_COMPOSE=docker-compose -f $(DOCKER_COMPOSE_FILE) --project-directory $(DOCKER_COMPOSE_DIR)

@@ -9,7 +9,7 @@ networks:
 services:
     # define the name of our service
     # corresponds to the "--name" parameter
-    docker-php-cli:
+    php-cli:
         # define the directory where the build should happened,
         # i.e. where the Dockerfile of the service is located
         # all paths are relative to the location of docker-compose.yml
@@ -31,7 +31,7 @@ services:
         networks:
             - web-network
 
-    docker-nginx:
+    nginx:
         build:
             context: ./services/nginx
         # defines the port mapping
@@ -45,10 +45,10 @@ services:
         networks:
             - web-network
 
-    docker-php-fpm:
+    php-fpm:
         build:
             context: ./services/php
-            dockerfile: php-fpm/Dockerfile
+            dockerfile: php-fpm-alpine/Dockerfile
         tty: true
         volumes:
             - ../../www/host:/var/www
