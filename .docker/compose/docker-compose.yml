@@ -1,0 +1,54 @@
+# tell docker what version of the docker-compose.yml were using
+version: '3'
+
+# define the network
+networks:
+    web-network:
+
+# start the services section
+services:
+    # define the name of our service
+    # corresponds to the "--name" parameter
+    docker-php-cli:
+        # define the directory where the build should happened,
+        # i.e. where the Dockerfile of the service is located
+        # all paths are relative to the location of docker-compose.yml
+        build:
+            context: ./services/php-cli
+        # reserve a tty - otherwise the container shuts down immediately
+        # corresponds to the "-i" flag
+        tty: true
+        # make the SSH port available via port mapping
+        ports:
+            - "2222:22"
+        # mount the app directory of the host to /var/www in the container
+        # corresponds to the "-v" option
+        volumes:
+            - ../../www/host:/var/www
+        # connect to the network
+        # corresponds to the "--network" option
+        networks:
+            - web-network
+
+    docker-nginx:
+        build:
+            context: ./services/nginx
+        # defines the port mapping
+        # corresponds to the "-p" flag
+        ports:
+            - "8080:80"
+        tty: true
+        volumes:
+            - ../../www/host:/var/www
+            - ./nginx/conf.d:/etc/nginx/conf.d
+        networks:
+            - web-network
+
+    docker-php-fpm:
+        build:
+            context: ./services/php-fpm
+        tty: true
+        volumes:
+            - ../../www/host:/var/www
+        networks:
+            - web-network
